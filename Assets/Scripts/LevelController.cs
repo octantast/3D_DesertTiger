@@ -10,11 +10,12 @@ public class LevelController : MonoBehaviour
     private AsyncOperation asyncOperation;
     private float initialLaunch;
     private float mode; // 0 - infinity, 1+ - levels
-    private int howManyLevelsDone;
+    public int howManyLevelsDone;
     private float volume;
 
+    public Color32 notenableButton;
    public Color32 enableButton;
-   public List<Image> buttons; // levels
+    [HideInInspector] public List<Image> buttons; // levels
 
     [HideInInspector] public GameObject startButtons;
     [HideInInspector] public GameObject levelButtons;
@@ -54,6 +55,12 @@ public class LevelController : MonoBehaviour
     private int levelCasualTarget;
     private int levelRareTarget;
     private int levelLegendTarget;
+
+    public float chosenLevel;
+    [HideInInspector] public List<ButtonScript> buttonscripts;
+    [HideInInspector] public GameObject leftarrow;
+    [HideInInspector] public GameObject righarrow;
+    public int levelMax;
 
     private void Awake()
     {
@@ -117,6 +124,9 @@ public class LevelController : MonoBehaviour
 
         asyncOperation = SceneManager.LoadSceneAsync("SampleScene");
         asyncOperation.allowSceneActivation = false;
+
+
+        leftarrow.SetActive(false);
     }
 
     private void Update()
@@ -159,9 +169,31 @@ public class LevelController : MonoBehaviour
     }
    public void StartGame(float mode)
     {
+        // cycled
         playSound(tapSound);
         if (mode <= howManyLevelsDone + 1)
         {
+            PlayerPrefs.SetInt("levelMax", levelMax);
+            
+            PlayerPrefs.SetFloat("chosenLevel", mode);
+
+            // cycled
+            for (int j = 1; j <= 10; j++)
+            {
+                for (int i = j; i <= levelMax; i += 10) // if 11, j = 1
+                {
+                    if (mode == i)
+                    {
+                        mode = j;
+                    }
+                    if (mode == 0)
+                    {
+                        mode = 1;
+                    }
+                }
+            }
+
+            // unique levels
             levelCasualTarget = 0;
             levelRareTarget = 0;
             levelLegendTarget = 0;
@@ -190,7 +222,31 @@ public class LevelController : MonoBehaviour
                 levelRareTarget = 2;
                 levelLegendTarget = 1;
             }
-
+           else if (mode == 6)
+            {
+                levelCasualTarget = 5;
+            }
+            else if (mode == 7)
+            {
+                levelCasualTarget = 3;
+                levelRareTarget = 3;
+            }
+            else if (mode == 8)
+            {
+                levelCasualTarget = 5;
+                levelRareTarget = 5;
+            }
+            else if (mode == 9)
+            {
+                levelCasualTarget = 5;
+                levelLegendTarget = 5;
+            }
+            else if (mode == 10)
+            {
+                levelCasualTarget = 10;
+                levelRareTarget = 5;
+                levelLegendTarget = 3;
+            }
 
             PlayerPrefs.SetInt("levelCasualTarget", levelCasualTarget);
             PlayerPrefs.SetInt("levelRareTarget", levelRareTarget);
@@ -294,5 +350,57 @@ public class LevelController : MonoBehaviour
         PlayerPrefs.SetInt("howManyA1", howManyA1);
         PlayerPrefs.SetInt("howManyA2", howManyA2);
         PlayerPrefs.Save();
+    }
+
+    public void leftArrow()
+    {
+        foreach (ButtonScript button in buttonscripts)
+        {
+            // changes text
+            button.thisLevelNumber -= 9;
+            button.thisLevelNumberText.text = button.thisLevelNumber.ToString("0");
+            // changes level
+            button.gameObject.SetActive(true);
+            if(button.thisLevelNumber <= howManyLevelsDone + 1)
+            {
+                button.thisImage.color = enableButton;
+            }
+            else
+            {
+                button.thisImage.color = notenableButton;
+            }
+        }
+        if(buttonscripts[0].thisLevelNumber <= 1)
+        {
+            leftarrow.SetActive(false);
+        }
+        righarrow.SetActive(true);
+
+    }
+
+    public void rightArrow()
+    {
+        foreach (ButtonScript button in buttonscripts)
+        {
+            // changes text
+            button.thisLevelNumber += 9;
+            button.thisLevelNumberText.text = button.thisLevelNumber.ToString("0");
+            // changes level
+            if (button.thisLevelNumber <= howManyLevelsDone + 1)
+            {
+                button.thisImage.color = enableButton;
+            }
+            else
+            {
+                button.thisImage.color = notenableButton;
+            }
+            if (button.thisLevelNumber > levelMax)
+            {
+                button.gameObject.SetActive(false);
+                righarrow.SetActive(false);
+            }
+        }
+        leftarrow.SetActive(true);
+
     }
 }

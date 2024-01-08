@@ -8,7 +8,7 @@ using TMPro;
 public class GeneralController : MonoBehaviour
 {
     private AsyncOperation asyncOperation;
-    public float mode;
+    public float mode; // unique level
     private int howManyLevelsDone;
     private bool reloadThis;
     private bool reload;
@@ -53,7 +53,7 @@ public class GeneralController : MonoBehaviour
     [HideInInspector] public Image a2Scale;
     public bool a1active;
     public bool a2active;
-    public SphereCollider catcher;
+    [HideInInspector] public SphereCollider catcher;
 
     [HideInInspector] public int howManyA1;
     [HideInInspector] public int howManyA2;
@@ -73,7 +73,7 @@ public class GeneralController : MonoBehaviour
     private int maxPoints; // record
 
     // main mechanic
-    public Drawing drawing;
+    [HideInInspector] public Drawing drawing;
     private bool shaping;
     private float shapingTimer;
     public float shapingTimerMax;
@@ -92,9 +92,9 @@ public class GeneralController : MonoBehaviour
     private string flyType;
 
     // levels
-    private int levelCasualTarget;
-    private int levelRareTarget;
-    private int levelLegendTarget;
+    public int levelCasualTarget;
+    public int levelRareTarget;
+    public int levelLegendTarget;
     private int yellowBugs;
     private int greenBugs;
     private int violetBugs;
@@ -107,10 +107,14 @@ public class GeneralController : MonoBehaviour
     [HideInInspector] public TMP_Text violetCount;
 
     // tutorial
-    public int catchFly;
-    public int traceShape;
-    public Animator tutorialAnimator;
-    public GameObject tutorialPointer;
+    [HideInInspector] public int catchFly;
+    [HideInInspector] public int traceShape;
+    [HideInInspector] public Animator tutorialAnimator;
+    [HideInInspector] public GameObject tutorialPointer;
+
+    public float chosenLevel; // real number of level
+
+    public int levelMax;
 
     private void Start()
     {
@@ -119,8 +123,10 @@ public class GeneralController : MonoBehaviour
         asyncOperation.allowSceneActivation = false;
         maxPoints = PlayerPrefs.GetInt("maxPoints");
         mode = PlayerPrefs.GetFloat("mode");
+        levelMax = PlayerPrefs.GetInt("levelMax");
         volume = PlayerPrefs.GetFloat("volume");
         newCurrency = PlayerPrefs.GetFloat("currency");
+        chosenLevel = PlayerPrefs.GetFloat("chosenLevel");
         howManyLevelsDone = PlayerPrefs.GetInt("howManyLevelsDone");
         howManyA1 = PlayerPrefs.GetInt("howManyA1");
         howManyA2 = PlayerPrefs.GetInt("howManyA2");
@@ -629,11 +635,28 @@ public class GeneralController : MonoBehaviour
     public void NextLevel()
     {
         sounds[3].Play();
-        if (mode <= 4)
+        if (chosenLevel <= howManyLevelsDone + 1)
         {
-            mode += 1;
-            PlayerPrefs.SetFloat("mode", mode);
+            chosenLevel += 1;
+            PlayerPrefs.SetFloat("chosenLevel", chosenLevel);
 
+            // cycled
+            for (int j = 1; j <= 10; j++)
+            {
+                for (int i = j; i <= levelMax; i += 10)
+                {
+                    if (chosenLevel == i)
+                    {
+                        mode = j;
+                    }
+                    if(mode == 0)
+                    {
+                        mode = 1;
+                    }
+                }
+            }
+
+            // unique levels
             levelCasualTarget = 0;
             levelRareTarget = 0;
             levelLegendTarget = 0;
@@ -662,6 +685,33 @@ public class GeneralController : MonoBehaviour
                 levelRareTarget = 2;
                 levelLegendTarget = 1;
             }
+            else if (mode == 6)
+            {
+                levelCasualTarget = 5;
+            }
+            else if (mode == 7)
+            {
+                levelCasualTarget = 3;
+                levelRareTarget = 3;
+            }
+            else if (mode == 8)
+            {
+                levelCasualTarget = 5;
+                levelRareTarget = 5;
+            }
+            else if (mode == 9)
+            {
+                levelCasualTarget = 5;
+                levelLegendTarget = 5;
+            }
+            else if (mode == 10)
+            {
+                levelCasualTarget = 10;
+                levelRareTarget = 5;
+                levelLegendTarget = 3;
+            }
+
+            PlayerPrefs.SetFloat("mode", mode);
 
             PlayerPrefs.SetInt("levelCasualTarget", levelCasualTarget);
             PlayerPrefs.SetInt("levelRareTarget", levelRareTarget);
@@ -784,11 +834,11 @@ public class GeneralController : MonoBehaviour
 
     private void winCount()
     {
-        if(mode > howManyLevelsDone)
+        if(chosenLevel > howManyLevelsDone)
         {
-            PlayerPrefs.SetInt("howManyLevelsDone", (int)mode);
+            PlayerPrefs.SetInt("howManyLevelsDone", (int)chosenLevel);
             PlayerPrefs.Save();
-        }
+        }       
     }
 
 
