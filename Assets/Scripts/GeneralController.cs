@@ -115,6 +115,7 @@ public class GeneralController : MonoBehaviour
     public float chosenLevel; // real number of level
 
     public int levelMax;
+    public GameObject specialSprite;
 
     private void Start()
     {
@@ -165,7 +166,8 @@ public class GeneralController : MonoBehaviour
         levelTarget2.SetActive(false);
         levelTarget3.SetActive(false);
         tutorialPointer.SetActive(false);
-
+        specialSprite.SetActive(false);
+        specialSprite.transform.localPosition = new Vector3(-800, -800, 0);
         // levels
         if (mode == 0) // infinity
         {
@@ -477,6 +479,7 @@ public class GeneralController : MonoBehaviour
         {
             if (levelCasualTarget <= yellowBugs && levelRareTarget <= greenBugs && levelLegendTarget <= violetBugs)
             {
+                specialSprite.SetActive(true);
                 winScreen.SetActive(true);
                 recordCheck();
                 winCount();
@@ -597,6 +600,7 @@ public class GeneralController : MonoBehaviour
     }
     public void lose()
     {
+        specialSprite.SetActive(true);
         platformIndex = 0;
         hideShapes();
         playAgain.SetActive(true);
