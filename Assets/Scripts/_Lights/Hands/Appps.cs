@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace rIAEugth.vseioAW.Game
+namespace _Lights.Hands
 {
     public class Appps:MonoBehaviour
     {

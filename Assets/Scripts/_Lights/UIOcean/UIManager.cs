@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace rIAEugth.vseioAW.cbxOIAEgt.oiawtH_Wi
+namespace _Lights.UIOcean
 {
     public class UIManager : MonoBehaviour
     {

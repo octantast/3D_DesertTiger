@@ -1,11 +1,9 @@
-using System.Collections.Generic;
-using System.Text;
 using Unity.Advertisement.IosSupport;
 using UnityEngine;
 
-namespace rIAEugth.vseioAW.segAIWUt
+namespace _Lights.RiversController
 {
-    public class IDFAController : MonoBehaviour
+    public class StarMoon : MonoBehaviour
     {
         private ATTrackingStatusBinding.AuthorizationTrackingStatus authorizedStatus =
             ATTrackingStatusBinding.AuthorizationTrackingStatus.AUTHORIZED;

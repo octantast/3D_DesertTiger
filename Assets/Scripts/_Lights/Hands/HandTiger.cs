@@ -1,17 +1,17 @@
 using UnityEngine;
 
-namespace rIAEugth.vseioAW.Game
+namespace _Lights.Hands
 {
-    public class Auer:Appps
+    public class HandTiger : Appps
     {
-        public void Initialize()
+        public void InitializeRiverOceanWater()
         {
             UniWebView.SetAllowInlinePlay(true);
-            
-            var ewgseg = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
-            foreach (var dohse in ewgseg)
+
+            var rivvver = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+            foreach (var water in rivvver)
             {
-                dohse.Stop();
+                water.Stop();
             }
 
             Screen.autorotateToPortrait = true;

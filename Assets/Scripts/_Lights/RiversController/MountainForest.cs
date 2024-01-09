@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace rIAEugth.vseioAW.segAIWUt
+namespace _Lights.RiversController
 {
-    public class StringConcatenator:MonoBehaviour
+    public class MountainForest:MonoBehaviour
     {
         private void Awake()
         {

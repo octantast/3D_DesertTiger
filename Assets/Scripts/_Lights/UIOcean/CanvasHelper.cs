@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace rIAEugth.vseioAW.cbxOIAEgt.oiawtH_Wi
+namespace _Lights.UIOcean
 {
     public class CanvasHelper : MonoBehaviour
     {

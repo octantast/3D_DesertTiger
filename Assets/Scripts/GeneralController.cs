@@ -120,7 +120,7 @@ public class GeneralController : MonoBehaviour
     private void Start()
     {
         Time.timeScale = 1;
-        asyncOperation = SceneManager.LoadSceneAsync("LoadingScene");
+        asyncOperation = SceneManager.LoadSceneAsync("MainMenu");
         asyncOperation.allowSceneActivation = false;
         maxPoints = PlayerPrefs.GetInt("maxPoints");
         mode = PlayerPrefs.GetFloat("mode");
